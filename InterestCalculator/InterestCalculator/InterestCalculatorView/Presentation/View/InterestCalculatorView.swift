@@ -240,6 +240,7 @@ struct InterestCalculatorView: View {
 
             Spacer()
         }
+        
         .padding(.top, 1)
     }
 }
