@@ -30,7 +30,8 @@ struct InterestTypeListView: View {
                 ForEach(interestTypeList, id: \.id) { type in
                     
                     InterestTypeView(isSelected: (selectedInterestTypeID == type.id) ? true : false, interestType: type, action: { itemSelected(type)
-                        selectedInterestTypeID = type.id
+                        self.selectedInterestTypeID = type.id
+
                     })
                     
                 }

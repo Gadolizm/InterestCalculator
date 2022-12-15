@@ -9,14 +9,26 @@ import Foundation
 
 struct InterestType{
     var id: Int = 0
-    var type: Type?
-    var name: Type.RawValue?
+    var type: InterestPeriod?
+    var name: InterestPeriod.RawValue?
     var description: String?
     var isHighestInterest: Bool?
+    var percentage: Double = 0.0
 }
 
-enum Type: String {
+enum InterestPeriod: String {
     case Daily
     case Monthly
     case Quarterly
+    
+    var percent: Double {
+        switch self {
+        case .Daily:
+            return 0.2
+        case .Monthly:
+            return 0.3
+        case .Quarterly:
+            return 0.4
+        }
+    }
 }

@@ -11,7 +11,7 @@ struct InterestCalculatorView: View {
     
     @State private var moneyValue: String = ""
     @State private var totalMoney: Int = 0
-    private var viewModel: InterestViewModel?
+    @StateObject var viewModel: InterestViewModel = .init()
 
     
     
@@ -28,9 +28,9 @@ struct InterestCalculatorView: View {
     ]
     
     var interestTypeList = [
-        InterestType(id: 0, name: "Daily", description: "Receive your interest in daily bases"),
-        InterestType(id: 1, name: "Monthly", description: "Receive your interest at the end of each month"),
-        InterestType(id: 2, name: "Quarterly", description: "Receive your interest at the end of each quarter", isHighestInterest: true)
+        InterestType(id: 0, type: .Daily, name: "Daily", description: "Receive your interest in daily bases"),
+        InterestType(id: 1, type: .Monthly,  name: "Monthly", description: "Receive your interest at the end of each month"),
+        InterestType(id: 2, type: .Quarterly,  name: "Quarterly", description: "Receive your interest at the end of each quarter", isHighestInterest: true)
     ]
     
     var body: some View {
@@ -58,6 +58,9 @@ struct InterestCalculatorView: View {
                     
                 }
                 CategoryListView(subCategoriesList: categoryList, selectedSubCategoryID: "0", itemSelected: { selectedSubCategory in
+                    viewModel.interestCategory = selectedSubCategory.category
+                    viewModel.calculateTotal()
+
                 })
                 .padding()
                 VStack(alignment: .center, spacing: 16){
@@ -70,6 +73,8 @@ struct InterestCalculatorView: View {
     
                     CategoryListView(subCategoriesList: categoryMoneyList, selectedSubCategoryID: "0", itemSelected: { selectedSubCategory in
                         moneyValue = selectedSubCategory.moneyName
+                        viewModel.interestMoneyCategory = selectedSubCategory.moneyCategory
+                        viewModel.calculateTotal()
                     })
                 }
                 .frame(width: 343, height: 150)
@@ -88,8 +93,10 @@ struct InterestCalculatorView: View {
                     .padding()
                 VStack{
                     
-                    InterestTypeListView(interestTypeList: interestTypeList, selectedInterestTypeID: 0) { selectedType in
-                        
+                    InterestTypeListView(interestTypeList: interestTypeList, selectedInterestTypeID: 0) { itemSelected in
+                        guard let type = itemSelected.type else {return}
+                        viewModel.interestPeriodType = type
+                        viewModel.calculateTotal()
                     }
                     
 //                    HStack{
@@ -179,7 +186,7 @@ struct InterestCalculatorView: View {
                             .fontWeight(.light)
                             .foregroundColor(.gray)
                         
-                        Text("\(totalMoney) EGP")
+                        Text(String( viewModel.totalAmount ) + " EGP")
                             .fontWeight(.heavy)
                     }
                     HStack{
@@ -213,6 +220,7 @@ struct InterestCalculatorView: View {
                     
                     Button(action: {
                         print("Button tapped")
+                  
                     }) {
                         Text("Open saving account")
                             .font(.system(size: 18))
@@ -232,6 +240,7 @@ struct InterestCalculatorView: View {
 
             Spacer()
         }
+        .padding(.top, 1)
     }
 }
 

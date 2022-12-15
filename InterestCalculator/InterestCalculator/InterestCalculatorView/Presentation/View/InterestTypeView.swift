@@ -10,7 +10,7 @@ import SwiftUI
 struct InterestTypeView: View {
     
     
-   @State var isSelected: Bool = false
+    var isSelected: Bool = false
     private let interestType: InterestType
     private let action: () -> Void
     
