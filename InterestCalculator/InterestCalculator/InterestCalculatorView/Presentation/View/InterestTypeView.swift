@@ -12,7 +12,7 @@ struct InterestTypeView: View {
     
     var isSelected: Bool = false
     private let interestType: InterestType
-    private let action: () -> Void
+    private let action: () -> Void 
     
     init(
         isSelected: Bool,
